@@ -93,6 +93,7 @@ export function FunctionCard({ fn, onResult, savedInputs }: FunctionCardProps) {
           account: walletClient.account,
         } as any);
 
+        // Show immediate success with transaction hash
         onResult({
           functionName: fn.name,
           type: 'write',
@@ -100,15 +101,25 @@ export function FunctionCard({ fn, onResult, savedInputs }: FunctionCardProps) {
           txHash: hash,
         });
 
-        // Wait for confirmation
-        const receipt = await publicClient.waitForTransactionReceipt({ hash });
+        toast.success('Transaction submitted!');
 
-        onResult({
-          functionName: fn.name,
-          type: 'write',
-          success: receipt.status === 'success',
-          txHash: hash,
-          data: receipt,
+        // Stop executing state immediately after submission
+        setIsExecuting(false);
+
+        // Wait for confirmation in background (don't block UI)
+        publicClient.waitForTransactionReceipt({ 
+          hash,
+          timeout: 60_000, // 60 second timeout
+        }).then((receipt) => {
+          if (receipt.status === 'success') {
+            toast.success('Transaction confirmed!');
+          } else {
+            toast.error('Transaction reverted on-chain');
+          }
+        }).catch((receiptError) => {
+          // Don't show error result since transaction was already submitted
+          console.warn('Failed to get receipt:', receiptError);
+          toast.warning('Transaction submitted but confirmation timed out. Check explorer for status.');
         });
       }
     } catch (error) {
@@ -119,7 +130,7 @@ export function FunctionCard({ fn, onResult, savedInputs }: FunctionCardProps) {
         success: false,
         error: message,
       });
-    } finally {
+      toast.error(message);
       setIsExecuting(false);
     }
   };

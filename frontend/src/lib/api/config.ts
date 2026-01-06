@@ -20,7 +20,9 @@ export const API_CONFIG = {
  * Get the full API base URL
  */
 export function getApiBaseUrl(): string {
-  return `${API_CONFIG.baseUrl}${API_CONFIG.prefix}`;
+  // Remove trailing slash from baseUrl if present
+  const cleanBaseUrl = API_CONFIG.baseUrl.replace(/\/$/, '');
+  return `${cleanBaseUrl}${API_CONFIG.prefix}`;
 }
 
 /**

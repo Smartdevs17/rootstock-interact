@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { CheckCircle2, XCircle, ExternalLink, Copy, Trash2, Terminal } from 'lucide-react';
 import { toast } from 'sonner';
+import { useContract } from '@/contexts/ContractContext';
+import { rootstockTestnet } from 'wagmi/chains';
 
 interface ExecutionResult {
   id: string;
@@ -23,14 +25,19 @@ interface ResponsePanelProps {
 }
 
 export function ResponsePanel({ results, onClear }: ResponsePanelProps) {
+  const { contract } = useContract();
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     toast.success('Copied to clipboard');
   };
 
   const getExplorerUrl = (txHash: string) => {
-    // Default to mainnet explorer
-    return `https://rootstock.blockscout.com/tx/${txHash}`;
+    const isTestnet = contract?.chainId === rootstockTestnet.id;
+    const baseUrl = isTestnet 
+      ? 'https://explorer.testnet.rootstock.io'
+      : 'https://explorer.rootstock.io';
+    return `${baseUrl}/tx/${txHash}`;
   };
 
   if (results.length === 0) {

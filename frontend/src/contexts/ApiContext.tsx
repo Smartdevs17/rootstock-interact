@@ -5,6 +5,7 @@
 
 import React, { createContext, useContext } from 'react';
 import { useQuery, useMutation, UseQueryResult, UseMutationResult } from '@tanstack/react-query';
+import { isApiError } from '@/lib/api/client';
 import {
   decodeTransaction,
   getTransaction,
@@ -68,7 +69,7 @@ export function ApiProvider({ children }: { children: React.ReactNode }) {
       queryKey: ['transaction', 'decode', request.txHash, request.network],
       queryFn: async () => {
         const result = await decodeTransaction(request);
-        if (!result.success) {
+        if (isApiError(result)) {
           throw new Error(result.error);
         }
         return result.data;
@@ -89,7 +90,7 @@ export function ApiProvider({ children }: { children: React.ReactNode }) {
       queryKey: ['transaction', 'get', txHash, network],
       queryFn: async () => {
         const result = await getTransaction(txHash, network);
-        if (!result.success) {
+        if (isApiError(result)) {
           throw new Error(result.error);
         }
         return result.data;
@@ -110,7 +111,7 @@ export function ApiProvider({ children }: { children: React.ReactNode }) {
       queryKey: ['contract', address, network],
       queryFn: async () => {
         const result = await getContract(address, network);
-        if (!result.success) {
+        if (isApiError(result)) {
           throw new Error(result.error);
         }
         return result.data;
@@ -126,7 +127,7 @@ export function ApiProvider({ children }: { children: React.ReactNode }) {
     return useMutation({
       mutationFn: async (request: DecodeEventsRequest) => {
         const result = await decodeEvents(request);
-        if (!result.success) {
+        if (isApiError(result)) {
           throw new Error(result.error);
         }
         return result.data;
@@ -144,7 +145,7 @@ export function ApiProvider({ children }: { children: React.ReactNode }) {
       queryKey: ['receipt', txHash, network],
       queryFn: async () => {
         const result = await getReceipt(txHash, network);
-        if (!result.success) {
+        if (isApiError(result)) {
           throw new Error(result.error);
         }
         return result.data;

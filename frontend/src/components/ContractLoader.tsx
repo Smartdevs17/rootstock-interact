@@ -5,6 +5,7 @@ import { Badge } from '@/components/ui/badge';
 import { useContract } from '@/contexts/ContractContext';
 import { fetchContractFromExplorer, isValidAddress } from '@/lib/explorer-api';
 import { getContract } from '@/lib/api/services/contract.service';
+import { addRecentContract } from '@/lib/recent-contracts';
 import { Search, Upload, Loader2, FileCode2, X } from 'lucide-react';
 import { useChainId } from 'wagmi';
 import { rootstockTestnet } from 'wagmi/chains';
@@ -43,6 +44,15 @@ export function ContractLoader() {
           chainId,
           isVerified: apiResult.data.isVerified,
         });
+        
+        // Save to recent contracts
+        addRecentContract({
+          address: apiResult.data.address,
+          name: apiResult.data.name,
+          chainId,
+          isVerified: apiResult.data.isVerified,
+        });
+        
         toast.success(`Loaded ${apiResult.data.name} (via API)`);
         return;
       }
@@ -61,6 +71,15 @@ export function ContractLoader() {
         chainId,
         isVerified: contractData.is_verified,
       });
+      
+      // Save to recent contracts
+      addRecentContract({
+        address: contractData.address,
+        name: contractData.name,
+        chainId,
+        isVerified: contractData.is_verified,
+      });
+      
       toast.success(`Loaded ${contractData.name} (via Explorer)`);
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Failed to fetch contract';

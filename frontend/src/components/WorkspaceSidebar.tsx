@@ -84,16 +84,16 @@ export function WorkspaceSidebar({ onSelectCall }: WorkspaceSidebarProps) {
             >
               <div className="flex items-start justify-between gap-2 mb-2">
                 <div className="flex-1 min-w-0">
-                  <h3 className="font-medium text-sm truncate" title={call.name}>
+                  <h3 className="font-medium text-sm break-words" title={call.name}>
                     {call.name}
                   </h3>
-                  <p className="text-xs text-muted-foreground font-mono truncate">
+                  <p className="text-xs text-muted-foreground font-mono break-all">
                     {call.contractName}.{call.functionName}()
                   </p>
                 </div>
                 <Badge
                   variant={call.functionType === 'read' ? 'read' : 'write'}
-                  className="shrink-0"
+                  className="shrink-0 mt-0.5"
                 >
                   {call.functionType}
                 </Badge>

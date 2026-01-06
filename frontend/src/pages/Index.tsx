@@ -7,6 +7,7 @@ import { WorkspaceProvider } from '@/contexts/WorkspaceContext';
 import { ApiProvider } from '@/contexts/ApiContext';
 import { WalletConnect } from '@/components/WalletConnect';
 import { ContractLoader } from '@/components/ContractLoader';
+import { RecentContracts } from '@/components/RecentContracts';
 import { FunctionList } from '@/components/FunctionList';
 import { ResponsePanel } from '@/components/ResponsePanel';
 import { WorkspaceSidebar } from '@/components/WorkspaceSidebar';
@@ -89,8 +90,9 @@ function AppContent() {
         {/* Center Content */}
         <div className="flex-1 flex flex-col">
           {/* Contract Loader */}
-          <div className="border-b border-border bg-card/30 p-4">
+          <div className="border-b border-border bg-card/30 p-4 space-y-4">
             <ContractLoader />
+            <RecentContracts />
           </div>
 
           {/* Functions & Response Split */}
