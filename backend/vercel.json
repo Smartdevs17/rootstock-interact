@@ -1,16 +1,15 @@
 {
   "version": 2,
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "rewrites": [
+  "builds": [
     {
-      "source": "/api/v1/(.*)",
-      "destination": "/api/index"
-    },
+      "src": "api/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
     {
-      "source": "/health",
-      "destination": "/api/index"
+      "src": "/(.*)",
+      "dest": "/api/index.ts"
     }
   ]
 }
-

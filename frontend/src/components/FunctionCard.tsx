@@ -66,7 +66,7 @@ export function FunctionCard({ fn, onResult, savedInputs }: FunctionCardProps) {
 
       if (fn.type === 'read') {
         const result = await publicClient.readContract({
-          address: contract.address as `0x${string}`,
+          address: contract.address.toLowerCase() as `0x${string}`,
           abi: contract.abi,
           functionName: fn.name,
           args,
@@ -85,7 +85,7 @@ export function FunctionCard({ fn, onResult, savedInputs }: FunctionCardProps) {
         }
 
         const hash = await walletClient.writeContract({
-          address: contract.address as `0x${string}`,
+          address: contract.address.toLowerCase() as `0x${string}`,
           abi: contract.abi,
           functionName: fn.name,
           args,
