@@ -7,7 +7,7 @@ import { WorkspaceProvider } from '@/contexts/WorkspaceContext';
 import { ApiProvider } from '@/contexts/ApiContext';
 import { WalletConnect } from '@/components/WalletConnect';
 import { ContractLoader } from '@/components/ContractLoader';
-import { RecentContracts } from '@/components/RecentContracts';
+import { RecentContractsPopover } from '@/components/RecentContractsPopover';
 import { FunctionList } from '@/components/FunctionList';
 import { ResponsePanel } from '@/components/ResponsePanel';
 import { WorkspaceSidebar } from '@/components/WorkspaceSidebar';
@@ -92,7 +92,7 @@ function AppContent() {
           {/* Contract Loader */}
           <div className="border-b border-border bg-card/30 p-4 space-y-4">
             <ContractLoader />
-            <RecentContracts />
+            <RecentContractsPopover />
           </div>
 
           {/* Functions & Response Split */}
