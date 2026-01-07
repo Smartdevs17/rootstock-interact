@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { TransactionService } from '../services/transaction.service.js'
 import { z } from 'zod'
+import { logger } from '../config/logger.js'
 
 const transactionService = new TransactionService()
 
@@ -30,7 +31,7 @@ export const decodeTransaction = async (req: Request, res: Response): Promise<vo
 			return
 		}
 
-		console.error('Error decoding transaction:', error)
+		logger.error('Error decoding transaction:', error)
 
 		const errorMessage = error instanceof Error ? error.message : 'Failed to decode transaction'
 		const lowerErrorMessage = errorMessage.toLowerCase()
@@ -90,7 +91,7 @@ export const getTransaction = async (req: Request, res: Response): Promise<void>
 			data: transactionData,
 		})
 	} catch (error) {
-		console.error('Error fetching transaction:', error)
+		logger.error('Error fetching transaction:', error)
 
 		const errorMessage = error instanceof Error ? error.message : 'Failed to fetch transaction'
 		const lowerErrorMessage = errorMessage.toLowerCase()

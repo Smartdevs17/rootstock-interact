@@ -1,6 +1,7 @@
 import { createApp } from '../src/app.js'
 import { connectDatabase } from '../src/config/database.js'
 import type { Request, Response } from 'express'
+import { logger } from '../src/config/logger.js'
 
 const app = createApp()
 
@@ -11,10 +12,10 @@ const ensureDbConnection = async (): Promise<void> => {
 		if (!isConnected) {
 			await connectDatabase()
 			isConnected = true
-			console.log('✅ Database connected for serverless function')
+			logger.info('✅ Database connected for serverless function')
 		}
 	} catch (error) {
-		console.error('❌ Failed to connect to database:', error)
+		logger.error('❌ Failed to connect to database:', error)
 		// Don't throw - allow the app to handle the request even if DB connection fails
 	}
 }

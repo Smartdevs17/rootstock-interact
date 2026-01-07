@@ -1,6 +1,7 @@
 import { ethers } from 'ethers'
 import { env } from '../config/env.js'
 import { Transaction, TransactionReceipt, EVMTraceCall } from '../types/index.js'
+import { logger } from '../config/logger.js'
 
 export class RPCService {
 	private mainnetProvider: ethers.JsonRpcProvider
@@ -87,7 +88,7 @@ export class RPCService {
 				throw error
 			}
 			
-			console.error('Error fetching transaction:', error)
+			logger.error('Error fetching transaction:', error)
 			throw new Error(`Failed to fetch transaction: ${errorMessage}`)
 		}
 	}
@@ -148,7 +149,7 @@ export class RPCService {
 				return null
 			}
 			
-			console.error('Error fetching transaction receipt:', error)
+			logger.error('Error fetching transaction receipt:', error)
 			throw new Error(`Failed to fetch transaction receipt: ${errorMessage}`)
 		}
 	}
@@ -163,7 +164,7 @@ export class RPCService {
 			}
 			return new Date(block.timestamp * 1000)
 		} catch (error) {
-			console.error('Error fetching block timestamp:', error)
+			logger.error('Error fetching block timestamp:', error)
 			throw new Error(`Failed to fetch block timestamp: ${error instanceof Error ? error.message : 'Unknown error'}`)
 		}
 	}
@@ -186,7 +187,7 @@ export class RPCService {
 
 			return trace as EVMTraceCall
 		} catch (error) {
-			console.warn('Archive node tracing failed, trying regular node...', error)
+			logger.warn('Archive node tracing failed, trying regular node...', error)
 			
 			try {
 				const trace = await provider.send('debug_traceTransaction', [
@@ -203,11 +204,11 @@ export class RPCService {
 			} catch (fallbackError) {
 				const errorMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError)
 				if (errorMessage.includes('debug_traceTransaction') || errorMessage.includes('does not exist') || errorMessage.includes('not available')) {
-					console.warn('debug_traceTransaction not supported by RPC node. Returning null for fallback handling.')
+					logger.warn('debug_traceTransaction not supported by RPC node. Returning null for fallback handling.')
 					return null
 				}
 				
-				console.error('Error tracing transaction:', fallbackError)
+				logger.error('Error tracing transaction:', fallbackError)
 				throw new Error(`Failed to trace transaction: ${errorMessage}`)
 			}
 		}
@@ -234,7 +235,7 @@ export class RPCService {
 			const storage = await provider.getStorage(address, slot, blockNumber)
 			return storage
 		} catch (error) {
-			console.error('Error fetching storage:', error)
+			logger.error('Error fetching storage:', error)
 			throw new Error(`Failed to fetch storage: ${error instanceof Error ? error.message : 'Unknown error'}`)
 		}
 	}

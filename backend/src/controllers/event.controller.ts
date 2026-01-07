@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { z } from 'zod'
 import { SignatureDecoderService } from '../services/signature-decoder.service.js'
 import { Event } from '../types/index.js'
+import { logger } from '../config/logger.js'
 
 const signatureDecoder = new SignatureDecoderService()
 
@@ -29,7 +30,7 @@ export const decodeEvents = async (req: Request, res: Response): Promise<void> =
 					try {
 						signatureDecoder.addCustomEventSignature(signature)
 					} catch (error) {
-						console.warn(`Failed to add event signature: ${signature}`, error)
+						logger.warn(`Failed to add event signature: ${signature}`, error)
 					}
 				}
 			})
@@ -61,7 +62,7 @@ export const decodeEvents = async (req: Request, res: Response): Promise<void> =
 			return
 		}
 
-		console.error('Error decoding events:', error)
+		logger.error('Error decoding events:', error)
 		const errorMessage = error instanceof Error ? error.message : 'Failed to decode events'
 		res.status(500).json({
 			success: false,

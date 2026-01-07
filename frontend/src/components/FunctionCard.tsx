@@ -78,6 +78,9 @@ export function FunctionCard({ fn, onResult, savedInputs }: FunctionCardProps) {
           success: true,
           data: result,
         });
+
+        // Stop executing state after successful read
+        setIsExecuting(false);
       } else {
         if (!walletClient || !isConnected) {
           toast.error('Please connect your wallet to execute write functions');
@@ -118,7 +121,6 @@ export function FunctionCard({ fn, onResult, savedInputs }: FunctionCardProps) {
           }
         }).catch((receiptError) => {
           // Don't show error result since transaction was already submitted
-          console.warn('Failed to get receipt:', receiptError);
           toast.warning('Transaction submitted but confirmation timed out. Check explorer for status.');
         });
       }

@@ -22,8 +22,8 @@ export const createApp = (): Express => {
 		},
 		credentials: true,
 	}))
-	app.use(express.json())
-	app.use(express.urlencoded({ extended: true }))
+	app.use(express.json({ limit: '100kb' }))
+	app.use(express.urlencoded({ extended: true, limit: '100kb' }))
 
 	app.use(rateLimiter)
 

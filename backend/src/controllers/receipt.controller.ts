@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { z } from 'zod'
 import { RPCService } from '../services/rpc.service.js'
 import { TransactionParserService } from '../services/transaction-parser.service.js'
+import { logger } from '../config/logger.js'
 
 const rpcService = new RPCService()
 const parserService = new TransactionParserService()
@@ -70,7 +71,7 @@ export const getReceipt = async (req: Request, res: Response): Promise<void> => 
 			return
 		}
 
-		console.error('Error fetching receipt:', error)
+		logger.error('Error fetching receipt:', error)
 		const errorMessage = error instanceof Error ? error.message : 'Failed to fetch receipt'
 
 		if (

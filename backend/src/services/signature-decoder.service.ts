@@ -1,5 +1,6 @@
 import { Interface, AbiCoder, Result } from 'ethers'
 import { Event } from '../types/index.js'
+import { logger } from '../config/logger.js'
 
 export class SignatureDecoderService {
 	private functionSignatures: Map<string, string> = new Map()
@@ -66,7 +67,7 @@ export class SignatureDecoderService {
 				return { name: functionName, params: decoded }
 			}
 		} catch (error) {
-			console.warn(`Failed to decode function parameters for ${functionName}:`, error)
+			logger.warn(`Failed to decode function parameters for ${functionName}:`, error)
 		}
 
 		return { name: functionName }
@@ -135,11 +136,11 @@ export class SignatureDecoderService {
 						})
 					})
 				} catch (error) {
-					console.warn('Failed to decode event data:', error)
+					logger.warn('Failed to decode event data:', error)
 				}
 			}
 		} catch (error) {
-			console.warn(`Failed to decode event ${eventName}:`, error)
+			logger.warn(`Failed to decode event ${eventName}:`, error)
 		}
 
 		return {

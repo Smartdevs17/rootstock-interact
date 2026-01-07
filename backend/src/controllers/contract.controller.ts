@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { z } from 'zod'
+import { logger } from '../config/logger.js'
 
 const ROOTSTOCK_EXPLORER_API = 'https://rootstock.blockscout.com/api/v2'
 const TESTNET_EXPLORER_API = 'https://rootstock-testnet.blockscout.com/api/v2'
@@ -58,7 +59,7 @@ export const getContract = async (req: Request, res: Response): Promise<void> =>
 				},
 			})
 		} catch (error) {
-			console.error('Error fetching contract from explorer:', error)
+			logger.error('Error fetching contract from explorer:', error)
 			const errorMessage = error instanceof Error ? error.message : 'Failed to fetch contract'
 			res.status(500).json({
 				success: false,
@@ -75,7 +76,7 @@ export const getContract = async (req: Request, res: Response): Promise<void> =>
 			return
 		}
 
-		console.error('Error in getContract:', error)
+		logger.error('Error in getContract:', error)
 		const errorMessage = error instanceof Error ? error.message : 'Failed to get contract'
 		res.status(500).json({
 			success: false,

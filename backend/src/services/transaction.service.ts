@@ -2,6 +2,7 @@ import { RPCService } from './rpc.service.js'
 import { TransactionParserService } from './transaction-parser.service.js'
 import { TransactionModel } from '../models/Transaction.js'
 import { TransactionData } from '../types/index.js'
+import { logger } from '../config/logger.js'
 
 export class TransactionService {
 	private rpcService: RPCService
@@ -36,7 +37,7 @@ export class TransactionService {
 		let evmTrace = await this.rpcService.traceTransaction(txHash, network)
 		
 		if (!evmTrace) {
-			console.warn('Full transaction tracing not available. Using basic call trace from transaction data.')
+			logger.warn('Full transaction tracing not available. Using basic call trace from transaction data.')
 			evmTrace = this.rpcService.createBasicCallTrace(tx, receipt)
 		}
 
@@ -73,7 +74,7 @@ export class TransactionService {
 				return cached.data as TransactionData
 			}
 		} catch (error) {
-			console.error('Error fetching cached transaction:', error)
+			logger.error('Error fetching cached transaction:', error)
 		}
 		return null
 	}
@@ -86,7 +87,7 @@ export class TransactionService {
 				{ upsert: true, new: true }
 			)
 		} catch (error) {
-			console.error('Error caching transaction:', error)
+			logger.error('Error caching transaction:', error)
 		}
 	}
 }

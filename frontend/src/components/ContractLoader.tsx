@@ -58,7 +58,6 @@ export function ContractLoader() {
       }
     } catch (apiError) {
       // Fall back to explorer API if backend fails
-      console.warn('Backend API failed, falling back to explorer:', apiError);
     }
 
     // Fallback to explorer API
