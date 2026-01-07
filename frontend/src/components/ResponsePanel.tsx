@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { formatValue } from '@/lib/abi-utils';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { CheckCircle2, XCircle, ExternalLink, Copy, Trash2, Terminal } from 'lucide-react';
 import { toast } from 'sonner';
 import { useContract } from '@/contexts/ContractContext';
@@ -67,7 +66,7 @@ export function ResponsePanel({ results, onClear }: ResponsePanelProps) {
         </Button>
       </div>
 
-      <ScrollArea className="flex-1 scrollbar-thin">
+      <div className="max-h-[500px] overflow-y-auto scrollbar-thin p-0">
         <div className="p-4 space-y-4">
           {results.map((result) => (
             <div
@@ -140,7 +139,7 @@ export function ResponsePanel({ results, onClear }: ResponsePanelProps) {
             </div>
           ))}
         </div>
-      </ScrollArea>
+      </div>
     </div>
   );
 }
